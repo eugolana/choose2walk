@@ -1,0 +1,185 @@
+<html>
+  <head>
+    <title>Choose To Walk</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+      integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+      crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+      integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+      crossorigin=""></script>
+      <script src="scripts/textPath2.js"></script>
+      <style>
+        #mapid {
+          height: 480px;
+          width: 480px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        #header {
+          width: 50%;
+          height: auto;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        #header h1 {
+          text-align: center;
+        }
+
+        #description {
+          width: 50%;
+          height: auto;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+        }
+
+        #editMode {
+          width: 50%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        </style>
+  </head>
+  <body>
+    <div id="header">
+      <h1>#CHOOSE2WALK</h1>
+    </div>
+    <div id="description"> </div>
+    <div id="editMode">
+      <form>
+       Latitude:<br>
+       <input type="text" name="lat" id="editLat"><br>
+       Longitude:<br>
+       <input type="text" name="lng" id="editLng"><br>
+       description:<br>
+       <input type="text" name="text" id="editDescription"><br>
+       <input type="submit" name="submit" value="get map">
+
+     </form>
+    </div>
+    <div id="mapid"></div>
+    <a href="/"> back to edit mode</a>
+    <script>
+
+    function getPolyLine(circle, angle_offset, r_offset) {
+      angle_offset = angle_offset || -1 * Math.PI/4;
+      r_offset = r_offset || -0.001
+      b = circle.getBounds()
+      center = b.getCenter()
+      rx = (center.lng - b.getWest()) * 0.9
+      ry = (center.lat - b.getSouth()) * 0.9
+          points = []
+      inc = Math.PI/20
+      for (var i = 0; i < 10; i ++) {
+        points.push([
+          center.lat +  ry * Math.cos(angle_offset + inc * i),
+          center.lng + rx * Math.sin(angle_offset + inc * i)])
+      }
+      line = L.polyline(points, {opacity: 0})
+      return line
+    }
+    var qs = getQueryStrings()
+
+    if (qs.lat != undefined) {
+      initMap()
+      document.getElementById('editMode').style.display = 'none'
+    } else {
+
+    }
+
+  function initMap() {
+    coords = [54.282359, -0.415863]
+    coords = [qs['lng'], qs['lat']]
+    document.getElementById('description').innerText = qs['text']
+    var mymap = L.map('mapid',{
+      zoomControl: false,
+      dragging: false
+      }
+    ).setView(coords, 14)
+
+    L.tileLayer( 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a','b','c']
+
+    }).addTo( mymap );
+
+    drawWalkCircles(coords, mymap)
+  }
+
+  function drawWalkCircles(coords, map) {
+
+      var c1 = L.circle(coords, {
+          stroke: '1px',
+          color: 'red',
+          weight: 2,
+          fillColor: '#f03',
+          fillOpacity: 0.2,
+          radius: 999
+      }).addTo(map);
+      l1 = getPolyLine(c1, -1 * Math.PI / 8 ).addTo(map)
+      l1.setText("15 minute walk", {
+        attributes: {
+          'font-size': 20,
+          fill: 'red'
+        }
+      })
+
+      var c2 = L.circle(coords, {
+          weight: 2,
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.2,
+          radius: 666
+      }).addTo(map);
+      l2 = getPolyLine(c2, -1 * Math.PI / 7 ).addTo(map)
+      l2.setText("10 minute walk", {
+        attributes: {
+          'font-size': 15,
+          fill: 'red'
+        }
+      })
+
+      var c3 = L.circle(coords, {
+          weight: 2,
+          color: 'red',
+          fillColor: '#f03',
+          fillOpacity: 0.2,
+          radius: 333
+      }).addTo(map);
+      l3 = getPolyLine(c3, -1 * Math.PI / 6).addTo(map)
+      l3.setText("5 minute walk", {
+        attributes: {
+          'font-size': 10,
+          fill: 'red',
+        }
+      })
+      return [c1,c2,c3,l1,l2,l3]
+    }
+
+    function removeLayers(layers) {
+      for (var i = 0; i < layers.length; i++) {
+        layers[i].remove()
+      }
+    }
+
+    function getQueryStrings() {
+      var assoc  = {};
+      var decode = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); };
+      var queryString = location.search.substring(1);
+      var keyValues = queryString.split('&');
+
+      for(var i in keyValues) {
+        var key = keyValues[i].split('=');
+        if (key.length > 1) {
+          assoc[decode(key[0])] = decode(key[1]);
+        }
+      }
+
+      return assoc;
+    }
+    </script>
+  </body>
+</html>
