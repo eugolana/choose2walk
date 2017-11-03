@@ -10,11 +10,11 @@ function initMap(qs) {
     if (qs['bw'] == "true") {
       var layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
       var color = 'black';
-      var opacity = 0.05;
+      var opacity = 0.0;
     } else {
       var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       var color = 'red';
-      var opacity = 0.04;
+      var opacity = 0.1;
     }
 
     // initialise map
@@ -102,10 +102,10 @@ function drawWalkCircles(coords, color, opacity, map) {
       radius: 333
   }).addTo(map);
   // inner text
-  var l3 = getPolyLine(c3, -1 * Math.PI / 6).addTo(map);
+  var l3 = getPolyLine(c3, -1 * Math.PI / 4, 0.85).addTo(map);
   l3.setText("5 minute walk", {
     attributes: {
-      'font-size': 10,
+      'font-size': 12,
       fill: color,
     }
   });
@@ -138,14 +138,14 @@ function getQueryStrings() {
 
 function getPolyLine(circle, angle_offset, r_offset) {
   angle_offset = angle_offset || -1 * Math.PI/4;
-  r_offset = r_offset || -0.001
+  r_offset = r_offset || 0.9
   b = circle.getBounds()
   center = b.getCenter()
-  rx = (center.lng - b.getWest()) * 0.9
-  ry = (center.lat - b.getSouth()) * 0.9
+  rx = (center.lng - b.getWest()) * r_offset
+  ry = (center.lat - b.getSouth()) * r_offset
       points = []
   inc = Math.PI/20
-  for (var i = 0; i < 10; i ++) {
+  for (var i = 0; i < 20; i ++) {
     points.push([
       center.lat +  ry * Math.cos(angle_offset + inc * i),
       center.lng + rx * Math.sin(angle_offset + inc * i)])
