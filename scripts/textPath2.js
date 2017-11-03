@@ -1,3 +1,15 @@
+/*
+ * Leaflet.TextPath - Shows text along a polyline
+ * Inspired by Tom Mac Wright article :
+ * http://mapbox.com/osmdev/2012/11/20/getting-serious-about-svg/
+ * taken from https://github.com/makinacorpus/Leaflet.TextPath
+ * adapted for leaflet 1.2.0 by @visionbegin
+
+ */
+
+
+
+
 (function () {
 
 var __onAdd = L.Polyline.prototype.onAdd,
