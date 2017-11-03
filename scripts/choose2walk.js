@@ -30,12 +30,18 @@ function initMap(qs) {
     // add concentric circles
     drawWalkCircles(coords, color, opacity, mymap);
   } else {
+
     // if we are in edit mode
 
+    // resize map to better fit and hide some unnecessary elements
+    document.getElementById('mapid').style.width = "320px";
+    document.getElementById('mapid').style.height = "320px";
+    document.getElementById('mapid').style.float = 'left';
+    document.getElementById('backLink').style.display = 'none';
     // this is vaguely at the center of the UK
-    var coords = [53.693365, -1.486819]
-    var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    var mymap = L.map('mapid').setView(coords, 6)
+    var coords = [53.693365, -1.486819];
+    var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var mymap = L.map('mapid').setView(coords, 6);
     L.tileLayer(layer_url, {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(mymap);
@@ -45,8 +51,8 @@ function initMap(qs) {
         marker.remove();
       }
       marker = L.marker(event.latlng).addTo(mymap)
-      document.getElementById('latEdit').value = event.latlng.lat;
-      document.getElementById('lngEdit').value = event.latlng.lng;
+      document.getElementById('latEdit').value = event.latlng.lat.toFixed(4);
+      document.getElementById('lngEdit').value = event.latlng.lng.toFixed(4);
     })
   }
 }
