@@ -2,7 +2,7 @@
 
 function initMap(qs) {
 coords = [qs['lat'], qs['lng']]
-if (qs['bw'] == true) {
+if (qs['bw'] == "true") {
   layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
   color = 'black';
   opacity = 0.05;
