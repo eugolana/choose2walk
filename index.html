@@ -52,9 +52,9 @@
     <div id="editMode">
       <form>
        Longitude:<br>
-       <input type="text" name="lng" required pattern="[0-9]+[.][0-9]+)"><br>
+       <input type="text" id="latEdit" name="lat"  required pattern="[0-9]+[.][0-9]+)"><br>
        Latitude:<br>
-       <input type="text" name="lat" required pattern="[0-9]+[.][0-9]+)"><br>
+       <input type="text" id="lngEdit" name="lng" required pattern="[0-9]+[.][0-9]+)"><br>
        description:<br>
        <textarea name="text" rows="10" cols="30" required>Walking is good for you!</textarea><br>
        <input type="checkbox" name="bw" value="true"> black and white <br>
@@ -67,15 +67,7 @@
     <script type="text/javascript">
     var qs = getQueryStrings()
 
-    console.log("helo 1")
-    console.log(qs)
-    if (qs.lat != undefined) {
-      console.log("hello")
-      initMap(qs)
-      document.getElementById('editMode').style.display = 'none'
-    } else {
-      console.log('not hello')
-    }
+    initMap(qs)
     </script>
     <a href="/choose2walk/"> back to edit mode</a>
   </body>

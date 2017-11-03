@@ -1,28 +1,44 @@
 
 
 function initMap(qs) {
-coords = [qs['lat'], qs['lng']]
-if (qs['bw'] == "true") {
-  layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
-  color = 'black';
-  opacity = 0.05;
-} else {
-  layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  color = 'red';
-  opacity = 0.05;
-}
-document.getElementById('description').innerText = qs['text']
-var mymap = L.map('mapid',{
-  zoomControl: false,
-  dragging: false
-  }
-).setView(coords, 14)
-L.tileLayer(layer_url, {
-   maxZoom: 18,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(mymap)
+  if (qs['lat'] && qs['lng'] && qs['text']){
+    document.getElementById('editMode').style.display = 'none';
+    coords = [qs['lat'], qs['lng']]
+    if (qs['bw'] == "true") {
+      layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
+      color = 'black';
+      opacity = 0.05;
+    } else {
+      layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      color = 'red';
+      opacity = 0.05;
+    }
+    document.getElementById('description').innerText = qs['text']
+    var mymap = L.map('mapid',{
+      zoomControl: false,
+      dragging: false
+      }
+    ).setView(coords, 14)
+    L.tileLayer(layer_url, {
+       maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mymap)
 
-drawWalkCircles(coords, mymap)
+    drawWalkCircles(coords, mymap)
+  } else {
+    coords = [53.693365, -1.486819]
+    layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    var mymap = L.map('mapid').setView(coords, 9)
+    L.tileLayer(layer_url, {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(mymap);
+
+    mymap.on('click', function(event) {
+      L.marker(event.latlng).addTo(mymap)
+      document.getElementById('latEdit').value = event.latlng.lat;
+      document.getElementById('lngEdit').value = event.latlng.lng;
+    })
+  }
 }
 
 function drawWalkCircles(coords, map) {
