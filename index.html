@@ -52,11 +52,11 @@
     <div id="editMode">
       <form>
        Longitude:<br>
-       <input type="text" name="lng" ><br>
+       <input type="text" name="lng" required pattern="[0-9]+[.][0-9]+)"><br>
        Latitude:<br>
-       <input type="text" name="lat" ><br>
+       <input type="text" name="lat" required pattern="[0-9]+[.][0-9]+)"><br>
        description:<br>
-       <textarea name="text" rows="10" cols="30">Walking is good for you!</textarea><br>
+       <textarea name="text" rows="10" cols="30" required>Walking is good for you!</textarea><br>
        <input type="checkbox" name="bw" value="true"> black and white <br>
        <input type="submit" name="submit" value="get map">
 
