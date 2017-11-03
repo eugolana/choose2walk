@@ -4,7 +4,7 @@ function initMap(qs) {
     // hide edit <div>
     document.getElementById('editMode').style.display = 'none';
     document.getElementById('info').innerText = qs['info'];
-    document.getElementById('slogan').innerText = qs['slogan'] || "It's good to walk.";
+    document.getElementById('slogan').innerText = qs['slogan'] || "Walking is good for you.";
 
     var coords = [qs['lat'], qs['lng']];
     if (qs['bw'] == "true") {
