@@ -1,59 +1,9 @@
 function initMap(qs) {
   // If qs is present.. (there is pre-validation so we can assume that its ok)
-  if (qs['lat'] && qs['lng'] && qs['info']){
-    // hide edit <div>
-    document.getElementById('editMode').style.display = 'none';
-    document.getElementById('info').innerText = qs['info'];
-    document.getElementById('slogan').innerText = qs['slogan'] || "Walking is good for you.";
-
-    var coords = [qs['lat'], qs['lng']];
-    if (qs['bw'] == "true") {
-      var layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
-      var color = 'black';
-      var opacity = 0.0;
-    } else {
-      var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      var color = 'red';
-      var opacity = 0.1;
-    }
-
-    // initialise map
-    var mymap = L.map('mapid',{
-      zoomControl: false,
-      dragging: false
-      }
-    ).setView(coords, 14);
-    L.tileLayer(layer_url, {
-       maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(mymap);
-    // add concentric circles
-    drawWalkCircles(coords, color, opacity, mymap);
+  if (qs['posterMode'] == 'true'){
+    initPosterView(qs);
   } else {
-
-    // if we are in edit mode
-
-    // resize map to better fit and hide some unnecessary elements
-    document.getElementById('mapid').style.width = "320px";
-    document.getElementById('mapid').style.height = "320px";
-    document.getElementById('mapid').style.float = 'left';
-    document.getElementById('backLink').style.display = 'none';
-    // this is vaguely at the center of the UK
-    var coords = [53.693365, -1.486819];
-    var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var mymap = L.map('mapid').setView(coords, 6);
-    L.tileLayer(layer_url, {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(mymap);
-    var marker;
-    mymap.on('click', function(event) {
-      if (marker != undefined) {
-        marker.remove();
-      }
-      marker = L.marker(event.latlng).addTo(mymap)
-      document.getElementById('latEdit').value = event.latlng.lat.toFixed(4);
-      document.getElementById('lngEdit').value = event.latlng.lng.toFixed(4);
-    })
+    initEditView(qs);
   }
 }
 
@@ -111,6 +61,74 @@ function drawWalkCircles(coords, color, opacity, map) {
   });
   // return an array of the objects (useful for removing later)
   return [c1,c2,c3,l1,l2,l3];
+}
+
+
+
+function initPosterView(qs){
+  // hide edit <div>
+  document.getElementById('editMode').style.display = 'none';
+  document.getElementById('info').innerText = qs['info'];
+  document.getElementById('slogan').innerText = qs['slogan'] || "Walking is good for you.";
+
+  var coords = [qs['lat'], qs['lng']];
+  if (qs['bw'] == "true") {
+    var layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
+    var color = 'black';
+    var opacity = 0.0;
+  } else {
+    var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var color = 'red';
+    var opacity = 0.1;
+  }
+
+  // initialise map
+  var mymap = L.map('mapid',{
+    zoomControl: false,
+    dragging: false
+    }
+  ).setView(coords, 14);
+  L.tileLayer(layer_url, {
+     maxZoom: 18,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(mymap);
+  // add concentric circles
+  drawWalkCircles(coords, color, opacity, mymap);
+}
+
+function initEditView(qs) {
+  // styling/layout stuff
+  document.getElementById('mapid').style.width = "320px";
+  document.getElementById('mapid').style.height = "320px";
+  document.getElementById('mapid').style.float = 'left';
+  document.getElementById('backLink').style.display = 'none';
+  // deault map centre (vaguely at the center of the UK)
+  if (qs['lat'] && qs['lng']) {
+    coords = [qs['lat'], qs['lng']]
+    zoom = 18;
+    // marker = L.marker(qs).addTo(mymap)
+    document.getElementById('latEdit').value = qs.lat
+    document.getElementById('lngEdit').value = qs.lng;
+  } else {
+    var coords = [53.693365, -1.486819];
+    var zoom = 6;
+    
+  }
+  var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  var mymap = L.map('mapid').setView(coords, zoom);
+  L.tileLayer(layer_url, {
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(mymap);
+  var marker;
+  // this will add marker to map, remove old marker, and edit form fields with coordinates
+  mymap.on('click', function(event) {
+    if (marker != undefined) {
+      marker.remove();
+    }
+    marker = L.marker(event.latlng).addTo(mymap)
+    document.getElementById('latEdit').value = event.latlng.lat.toFixed(4);
+    document.getElementById('lngEdit').value = event.latlng.lng.toFixed(4);
+  })
 }
 
 function removeLayers(layers) {

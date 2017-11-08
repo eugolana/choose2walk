@@ -28,10 +28,11 @@
         </div>
         <div class="rightColumn">
            Latitude:<br>
-           <input type="text" id="latEdit" name="lat"  required pattern="[0-9]+[.][0-9]+)" placeholder="click on the map below to set coordinates"><br>
+           <input type="text" id="latEdit" name="lat"  required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
            Longitude:<br>
-           <input type="text" id="lngEdit" name="lng" required pattern="[0-9]+[.][0-9]+)" placeholder="click on the map below to set coordinates"><br>
+           <input type="text" id="lngEdit" name="lng" required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
            <input type="checkbox" name="bw" value="true"> black and white <br>
+           <input type="hidden" name="posterMode" value="true">
            <input type="submit" name="submit" value="get map">
        </div>
      </form>
