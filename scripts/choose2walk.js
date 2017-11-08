@@ -1,9 +1,9 @@
-function initMap(qs) {
+function initMap(querystring) {
   // If qs is present.. (there is pre-validation so we can assume that its ok)
-  if (qs['posterMode'] == 'true'){
-    initPosterView(qs);
+  if (querystring['posterMode'] == 'true'){
+    initPosterView(querystring);
   } else {
-    initEditView(qs);
+    initEditView(querystring);
   }
 }
 
@@ -65,14 +65,17 @@ function drawWalkCircles(coords, color, opacity, map) {
 
 
 
-function initPosterView(qs){
+function initPosterView(querystring){
   // hide edit <div>
   document.getElementById('editMode').style.display = 'none';
-  document.getElementById('info').innerText = qs['info'];
-  document.getElementById('slogan').innerText = qs['slogan'] || "Walking is good for you.";
+  document.getElementById('info').innerText = querystring['info'];
+  document.getElementById('slogan').innerText = querystring['slogan'] || "Walking is good for you.";
 
-  var coords = [qs['lat'], qs['lng']];
-  if (qs['bw'] == "true") {
+  // include querystring in backlink with 'posterMode=false'
+  document.getElementById('backLink').href = String(window.location).replace("posterMode=true", "posterMode=false")
+
+  var coords = [querystring['lat'], querystring['lng']];
+  if (querystring['bw'] == "true") {
     var layer_url = 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png';
     var color = 'black';
     var opacity = 0.0;
@@ -103,16 +106,22 @@ function initEditView(qs) {
   document.getElementById('mapid').style.float = 'left';
   document.getElementById('backLink').style.display = 'none';
   // deault map centre (vaguely at the center of the UK)
-  if (qs['lat'] && qs['lng']) {
-    coords = [qs['lat'], qs['lng']]
+  if (querystring['lat'] && querystring['lng']) {
+    coords = [querystring['lat'], querystring['lng']]
     zoom = 18;
     // marker = L.marker(qs).addTo(mymap)
-    document.getElementById('latEdit').value = qs.lat
-    document.getElementById('lngEdit').value = qs.lng;
+    document.getElementById('latEdit').value = querystring.lat
+    document.getElementById('lngEdit').value = querystring.lng;
   } else {
     var coords = [53.693365, -1.486819];
     var zoom = 6;
     
+  }
+  if (querystring['info']) {
+    document.getElementById('infoEdit').value = querystring['info']
+  }
+  if (querystring['slogan']) {
+    document.getElementById('sloganEdit').value = querystring['slogan']
   }
   var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
   var mymap = L.map('mapid').setView(coords, zoom);

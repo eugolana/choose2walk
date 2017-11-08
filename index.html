@@ -23,8 +23,8 @@
     <div id="editMode">
       <form>
         <div class="leftColumn">
-          <textarea name="info" rows="10" cols="30" required placeholder="enter some information about the location, for example 'GP clinic'"></textarea><br>
-          <textarea name="slogan" rows="10" cols="30" placeholder="Enter a slogan! This will default to 'it's good to walk'."></textarea><br>
+          <textarea name="info" id="infoEdit" rows="10" cols="30" required placeholder="enter some information about the location, for example 'GP clinic'"></textarea><br>
+          <textarea name="slogan" id="sloganEdit" rows="10" cols="30" placeholder="Enter a slogan! This will default to 'it's good to walk'."></textarea><br>
         </div>
         <div class="rightColumn">
            Latitude:<br>
@@ -46,9 +46,9 @@
 
 </a>
     <script type="text/javascript">
-    var qs = getQueryStrings()
+    var querystring = getQueryStrings()
 
-    initMap(qs)
+    initMap(querystring)
     </script>
   </body>
 </html>
