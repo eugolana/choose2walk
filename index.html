@@ -15,36 +15,38 @@
       <script type="text/javascript" src="scripts/choose2walk.js"></script>
   </head>
   <body>
-    <div id="header">
-      <h1>#CHOOSE2WALK</h1>
-    </div>
-    <div id="slogan"> </div>
-    <div id="info"> </div>
-    <div id="editMode">
-      <form>
-        <div class="leftColumn">
-          <textarea name="info" id="infoEdit" rows="10" cols="30" required placeholder="enter some information about the location, for example 'GP clinic'"></textarea><br>
-          <textarea name="slogan" id="sloganEdit" rows="10" cols="30" placeholder="Enter a slogan! This will default to 'it's good to walk'."></textarea><br>
-        </div>
-        <div class="rightColumn">
-           Latitude:<br>
-           <input type="text" id="latEdit" name="lat"  required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
-           Longitude:<br>
-           <input type="text" id="lngEdit" name="lng" required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
-           <input type="checkbox" name="bw" value="true"> black and white <br>
-           <input type="hidden" name="posterMode" value="true">
-           <input type="submit" name="submit" value="get map">
-       </div>
-     </form>
-    </div>
+    <img id="bgrnd" src="images/bgr_bw.svg">
     <div id="main">
+      <div id="header">
+        <h1>#CHOOSE2WALK</h1>
+      </div>
+      <div id="subheader">
+        <div id="info"> </div>
+      </div>
+      <div id="editMode">
+        <form>
+          <div class="leftColumn">
+            <textarea name="info" id="infoEdit" rows="10" cols="30" required placeholder="enter some information about the location, for example 'GP clinic'"></textarea><br>
+            <textarea name="slogan" id="sloganEdit" rows="10" cols="30" placeholder="Enter a slogan! This will default to 'it's good to walk'."></textarea><br>
+          </div>
+          <div class="rightColumn">
+             Latitude:<br>
+             <input type="text" id="latEdit" name="lat"  required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
+             Longitude:<br>
+             <input type="text" id="lngEdit" name="lng" required pattern="^-*[0-9]+[.][0-9]+$" placeholder="click on the map below to set coordinates"><br>
+             <input type="checkbox" name="bw" value="true"> black and white <br>
+             <input type="hidden" name="posterMode" value="true">
+             <input type="submit" name="submit" value="get map">
+         </div>
+       </form>
+      </div>
       <div id="mapid"></div>
+      <div id="slogan"></div>
+
       <a id="backLink" href="/choose2walk/"> back to edit mode</a>
       <a id="printButton" onclick="window.print(); false;" href="#">print</a>
-      <a id="sourceCode" href="http://github.com/eugolana/choose2walk">source code
+      <a id="sourceCode" href="http://github.com/eugolana/choose2walk">source code</a>
     </div>
-
-</a>
     <script type="text/javascript">
     var querystring = getQueryStrings()
 

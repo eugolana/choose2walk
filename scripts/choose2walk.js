@@ -7,69 +7,18 @@ function initMap(querystring) {
   }
 }
 
-function drawWalkCircles(coords, color, opacity, map) {
-  // outer circle
-  var c1 = L.circle(coords, {
-      stroke: '1px',
-      color: color,
-      weight: 2,
-      fillColor: color,
-      fillOpacity: opacity,
-      radius: 999
-  }).addTo(map);
-  // outer text
-  var l1 = getPolyLine(c1, -1 * Math.PI / 8 ).addTo(map);
-  l1.setText("15 minute walk", {
-    attributes: {
-      'font-size': 20,
-      fill: color
-    }
-  });
-
-  // mid circle
-  var c2 = L.circle(coords, {
-      weight: 2,
-      color: color,
-      fillColor: color,
-      fillOpacity: opacity,
-      radius: 666
-  }).addTo(map);
-  // mid text
-  var l2 = getPolyLine(c2, -1 * Math.PI / 7 ).addTo(map);
-  l2.setText("10 minute walk", {
-    attributes: {
-      'font-size': 15,
-      fill: color
-    }
-  });
-
-  // inner circle
-  var c3 = L.circle(coords, {
-      weight: 2,
-      color: color,
-      fillColor: color,
-      fillOpacity: opacity,
-      radius: 333
-  }).addTo(map);
-  // inner text
-  var l3 = getPolyLine(c3, -1 * Math.PI / 4, 0.85).addTo(map);
-  l3.setText("5 minute walk", {
-    attributes: {
-      'font-size': 12,
-      fill: color,
-    }
-  });
-  // return an array of the objects (useful for removing later)
-  return [c1,c2,c3,l1,l2,l3];
-}
-
-
 
 function initPosterView(querystring){
   // hide edit <div>
   document.getElementById('editMode').style.display = 'none';
-  document.getElementById('info').innerText = querystring['info'];
-  document.getElementById('slogan').innerText = querystring['slogan'] || "Walking is good for you.";
+
+  var info = document.createElement('p')
+  info.innerText = querystring['info']
+  document.getElementById('info').appendChild(info)
+
+  var slogan = document.createElement('p');
+  slogan.innerText = querystring['slogan'] || "Walking is good for you.";
+  document.getElementById('slogan').appendChild(slogan);
 
   // include querystring in backlink with 'posterMode=false'
   document.getElementById('backLink').href = String(window.location).replace("posterMode=true", "posterMode=false")
@@ -81,7 +30,7 @@ function initPosterView(querystring){
     var opacity = 0.0;
   } else {
     var layer_url = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var color = 'red';
+    var color = 'black';
     var opacity = 0.1;
   }
 
@@ -100,6 +49,7 @@ function initPosterView(querystring){
 }
 
 function initEditView(qs) {
+  document.getElementById('bgrnd').style.display = 'none';
   // styling/layout stuff
   document.getElementById('mapid').style.width = "320px";
   document.getElementById('mapid').style.height = "320px";
@@ -138,6 +88,62 @@ function initEditView(qs) {
     document.getElementById('latEdit').value = event.latlng.lat.toFixed(4);
     document.getElementById('lngEdit').value = event.latlng.lng.toFixed(4);
   })
+}
+
+function drawWalkCircles(coords, color, opacity, map) {
+  // outer circle
+  var c1 = L.circle(coords, {
+      stroke: '2px',
+      color: color,
+      weight: 2,
+      fillColor: '#FFFFFF',
+      fillOpacity: opacity,
+      radius: 999
+  }).addTo(map);
+  // outer text
+  var l1 = getPolyLine(c1, -1 * Math.PI / 8 ).addTo(map);
+  l1.setText("15 minute walk", {
+    attributes: {
+      'font-size': 20,
+      fill: color
+    }
+  });
+
+  // mid circle
+  var c2 = L.circle(coords, {
+      weight: 2,
+      color: color,
+      fillColor: '#FFFFFF',
+      fillOpacity: opacity,
+      radius: 666
+  }).addTo(map);
+  // mid text
+  var l2 = getPolyLine(c2, -1 * Math.PI / 7 ).addTo(map);
+  l2.setText("10 minute walk", {
+    attributes: {
+      'font-size': 15,
+      fill: color
+    }
+  });
+
+  // inner circle
+  var c3 = L.circle(coords, {
+      weight: 2,
+      color: color,
+      fillColor: '#FFFFFF',
+      fillOpacity: opacity,
+      radius: 333
+  }).addTo(map);
+  // inner text
+  var l3 = getPolyLine(c3, -1 * Math.PI / 4, 0.85).addTo(map);
+  l3.setText("5 minute walk", {
+    attributes: {
+      'font-size': 12,
+      fill: color,
+    }
+  });
+  // return an array of the objects (useful for removing later)
+  return [c1,c2,c3,l1,l2,l3];
 }
 
 function removeLayers(layers) {
